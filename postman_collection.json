@@ -1,0 +1,1097 @@
+{
+  "info": {
+    "name": "SAKAN API - Student Housing Platform",
+    "_postman_id": "c1f76d90-8321-4f93-b82b-5813e311a2f9",
+    "description": "Complete Postman collection for SAKAN Non-Profit Student Housing Platform backend.\nIncludes automatic token capture, environment variables, localized requests (ar/en), and full coverage of all endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api/v1", "type": "string" },
+    { "key": "healthUrl", "value": "http://localhost:5000/health", "type": "string" },
+    { "key": "studentToken", "value": "", "type": "string" },
+    { "key": "ownerToken", "value": "", "type": "string" },
+    { "key": "refreshToken", "value": "", "type": "string" },
+    { "key": "propertyId", "value": "", "type": "string" },
+    { "key": "roomId", "value": "", "type": "string" },
+    { "key": "bookingId", "value": "", "type": "string" },
+    { "key": "notificationId", "value": "", "type": "string" },
+    { "key": "conversationId", "value": "", "type": "string" },
+    { "key": "targetUserId", "value": "", "type": "string" },
+    { "key": "messageId", "value": "", "type": "string" },
+    { "key": "imageId", "value": "", "type": "string" },
+    { "key": "roomImageId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "00. Health Check",
+      "item": [
+        {
+          "name": "Health Check (Arabic)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{healthUrl}}", "host": ["{{healthUrl}}"] }
+          }
+        },
+        {
+          "name": "Health Check (English)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "en" }
+            ],
+            "url": { "raw": "{{healthUrl}}", "host": ["{{healthUrl}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "01. Authentication",
+      "item": [
+        {
+          "name": "Get Registration Options (Universities, Faculties, Governorates)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/auth/registration-options", "host": ["{{baseUrl}}"], "path": ["auth", "registration-options"] }
+          }
+        },
+        {
+          "name": "Register Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data) {",
+                  "    pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "    pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"أحمد محمد إبراهيم\",\n  \"email\": \"student2@eng.asu.edu.eg\",\n  \"phone\": \"01012345679\",\n  \"password\": \"Password123\",\n  \"confirmPassword\": \"Password123\",\n  \"role\": \"STUDENT\",\n  \"gender\": \"MALE\",\n  \"governorate\": \"القاهرة\",\n  \"university\": \"جامعة عين شمس\",\n  \"faculty\": \"كلية الهندسة\",\n  \"major\": \"هندسة مدنية\",\n  \"academicYear\": \"الفرقة الأولى\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Register Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data) {",
+                  "    pm.collectionVariables.set('ownerToken', res.data.accessToken);",
+                  "    pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"محمد السيد محمود\",\n  \"email\": \"owner@example.com\",\n  \"phone\": \"01033334444\",\n  \"password\": \"Password123\",\n  \"role\": \"OWNER\",\n  \"governorate\": \"الجيزة\",\n  \"gender\": \"MALE\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Login Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data) {",
+                  "    pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "    pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login with Phone Number",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data) {",
+                  "    pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "    pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"01012345679\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login Owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data) {",
+                  "    pm.collectionVariables.set('ownerToken', res.data.accessToken);",
+                  "    pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"owner@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data) {",
+                  "    pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "    pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/refresh-token", "host": ["{{baseUrl}}"], "path": ["auth", "refresh-token"] }
+          }
+        },
+        {
+          "name": "Get Current User (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/logout", "host": ["{{baseUrl}}"], "path": ["auth", "logout"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Users Profile",
+      "item": [
+        {
+          "name": "Get My Matching Roommates (Auto match by my University/Faculty/Governorate)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/roommates?matchMyProfile=true&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "roommates"],
+              "query": [
+                { "key": "matchMyProfile", "value": "true" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Roommates Directory (Search & Filters)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/roommates?page=1&limit=10&governorate=&university=&housingStatus=",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "roommates"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "governorate", "value": "الإسكندرية", "disabled": true },
+                { "key": "university", "value": "جامعة القاهرة", "disabled": true },
+                { "key": "faculty", "value": "كلية الهندسة", "disabled": true },
+                { "key": "housingStatus", "value": "يبحث عن شريك سكن", "disabled": true },
+                { "key": "search", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/users/me", "host": ["{{baseUrl}}"], "path": ["users", "me"] }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"أحمد\",\n  \"lastName\": \"محمود المعدل\",\n  \"bio\": \"طالب في كلية الهندسة جامعة القاهرة\",\n  \"gender\": \"ذكر\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/users/me", "host": ["{{baseUrl}}"], "path": ["users", "me"] }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"Password123\",\n  \"newPassword\": \"NewPassword123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/users/me/password", "host": ["{{baseUrl}}"], "path": ["users", "me", "password"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Properties",
+      "item": [
+        {
+          "name": "List Properties (Public - Search & Filters)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}", "disabled": false },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/properties?page=1&limit=10&governorate=الجيزة&university=جامعة القاهرة",
+              "host": ["{{baseUrl}}"],
+              "path": ["properties"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "governorate", "value": "الجيزة" },
+                { "key": "university", "value": "جامعة القاهرة" },
+                { "key": "faculty", "value": "هندسة", "disabled": true },
+                { "key": "search", "value": "سكن", "disabled": true },
+                { "key": "city", "value": "الجيزة", "disabled": true },
+                { "key": "area", "value": "الدقي", "disabled": true },
+                { "key": "propertyType", "value": "STUDENT_HOUSING", "disabled": true },
+                { "key": "genderPolicy", "value": "MALE", "disabled": true },
+                { "key": "minPrice", "value": "1000", "disabled": true },
+                { "key": "maxPrice", "value": "5000", "disabled": true },
+                { "key": "amenities", "value": "WiFi,Air Conditioning", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Property (Owner)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data) {",
+                  "    pm.collectionVariables.set('propertyId', res.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"سكن النور للطلاب بجوار الجامعة\",\n  \"description\": \"سكن طلابي مجهز بالكامل ومكيف قريب من محطة المترو والجامعة مع توفر خدمة إنترنت عالية السرعة.\",\n  \"propertyType\": \"STUDENT_HOUSING\",\n  \"city\": \"القاهرة\",\n  \"area\": \"مدينة نصر\",\n  \"address\": \"شارع عباس العقاد بجوار الجامعة\",\n  \"latitude\": 30.0561,\n  \"longitude\": 31.3301,\n  \"genderPolicy\": \"MALE\",\n  \"amenityIds\": []\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/properties", "host": ["{{baseUrl}}"], "path": ["properties"] }
+          }
+        },
+        {
+          "name": "Get Property Details (Public)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/properties/{{propertyId}}", "host": ["{{baseUrl}}"], "path": ["properties", "{{propertyId}}"] }
+          }
+        },
+        {
+          "name": "Record Property View",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}", "disabled": true },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/properties/{{propertyId}}/view", "host": ["{{baseUrl}}"], "path": ["properties", "{{propertyId}}", "view"] }
+          }
+        },
+        {
+          "name": "Update Property (Owner)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"سكن النور المتميز للطلاب\",\n  \"description\": \"تحديث للوصف: سكن راقي هادئ مع خدمات نظافة أسبوعية ومصعد\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/properties/{{propertyId}}", "host": ["{{baseUrl}}"], "path": ["properties", "{{propertyId}}"] }
+          }
+        },
+        {
+          "name": "Deactivate / Soft Delete Property (Owner)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/properties/{{propertyId}}", "host": ["{{baseUrl}}"], "path": ["properties", "{{propertyId}}"] }
+          }
+        },
+        {
+          "name": "Delete Property Permanently (Owner)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/properties/{{propertyId}}?permanent=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["properties", "{{propertyId}}"],
+              "query": [
+                { "key": "permanent", "value": "true" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upload Property Images (Owner - multipart/form-data)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "images", "type": "file", "src": [] }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/properties/{{propertyId}}/images", "host": ["{{baseUrl}}"], "path": ["properties", "{{propertyId}}", "images"] }
+          }
+        },
+        {
+          "name": "Delete Property Image (Owner)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/properties/{{propertyId}}/images/{{imageId}}", "host": ["{{baseUrl}}"], "path": ["properties", "{{propertyId}}", "images", "{{imageId}}"] }
+          }
+        },
+        {
+          "name": "Reorder Property Images (Owner)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"images\": [\n    { \"id\": \"{{imageId}}\", \"sortOrder\": 1 }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/properties/{{propertyId}}/images/order", "host": ["{{baseUrl}}"], "path": ["properties", "{{propertyId}}", "images", "order"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Rooms",
+      "item": [
+        {
+          "name": "Get Property Rooms (Public)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/properties/{{propertyId}}/rooms",
+              "host": ["{{baseUrl}}"],
+              "path": ["properties", "{{propertyId}}", "rooms"],
+              "query": [
+                { "key": "availableOnly", "value": "true", "disabled": true },
+                { "key": "minPrice", "value": "1000", "disabled": true },
+                { "key": "maxPrice", "value": "3000", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Room (Owner)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data) {",
+                  "    pm.collectionVariables.set('roomId', res.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"غرفة 101 - ثنائية مكيفة\",\n  \"description\": \"غرفة مشتركة لطالبين مجهزة بمكتبين ودولابين وتكييف هواء حديث\",\n  \"capacity\": 2,\n  \"monthlyPrice\": 1800,\n  \"amenityIds\": []\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/properties/{{propertyId}}/rooms", "host": ["{{baseUrl}}"], "path": ["properties", "{{propertyId}}", "rooms"] }
+          }
+        },
+        {
+          "name": "Get Room Details (Public)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/rooms/{{roomId}}", "host": ["{{baseUrl}}"], "path": ["rooms", "{{roomId}}"] }
+          }
+        },
+        {
+          "name": "Update Room (Owner)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"monthlyPrice\": 1900,\n  \"capacity\": 2\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/rooms/{{roomId}}", "host": ["{{baseUrl}}"], "path": ["rooms", "{{roomId}}"] }
+          }
+        },
+        {
+          "name": "Deactivate Room (Owner)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/rooms/{{roomId}}", "host": ["{{baseUrl}}"], "path": ["rooms", "{{roomId}}"] }
+          }
+        },
+        {
+          "name": "Upload Room Images (Owner - multipart/form-data)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "images", "type": "file", "src": [] }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/rooms/{{roomId}}/images", "host": ["{{baseUrl}}"], "path": ["rooms", "{{roomId}}", "images"] }
+          }
+        },
+        {
+          "name": "Delete Room Image (Owner)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/rooms/{{roomId}}/images/{{roomImageId}}", "host": ["{{baseUrl}}"], "path": ["rooms", "{{roomId}}", "images", "{{roomImageId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05. Booking Requests",
+      "item": [
+        {
+          "name": "Create Booking Request (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data) {",
+                  "    pm.collectionVariables.set('bookingId', res.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"propertyId\": \"{{propertyId}}\",\n  \"roomId\": \"{{roomId}}\",\n  \"message\": \"مرحباً، أود حجز سرير في هذه الغرفة للفصل الدراسي القادم.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/booking-requests", "host": ["{{baseUrl}}"], "path": ["booking-requests"] }
+          }
+        },
+        {
+          "name": "Get My Booking Requests (Student)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking-requests/my?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["booking-requests", "my"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "status", "value": "PENDING", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Approve Booking Request (Owner - Atomic Transaction)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/booking-requests/{{bookingId}}/approve", "host": ["{{baseUrl}}"], "path": ["booking-requests", "{{bookingId}}", "approve"] }
+          }
+        },
+        {
+          "name": "Reject Booking Request (Owner)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"عذراً، الغرفة غير متوفرة حالياً.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/booking-requests/{{bookingId}}/reject", "host": ["{{baseUrl}}"], "path": ["booking-requests", "{{bookingId}}", "reject"] }
+          }
+        },
+        {
+          "name": "Cancel Booking Request (Student)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/booking-requests/{{bookingId}}/cancel", "host": ["{{baseUrl}}"], "path": ["booking-requests", "{{bookingId}}", "cancel"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "06. Favorites",
+      "item": [
+        {
+          "name": "Add Property to Favorites",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/favorites/{{propertyId}}", "host": ["{{baseUrl}}"], "path": ["favorites", "{{propertyId}}"] }
+          }
+        },
+        {
+          "name": "Get My Favorites",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/favorites?page=1&limit=10", "host": ["{{baseUrl}}"], "path": ["favorites"], "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "10" }] }
+          }
+        },
+        {
+          "name": "Remove Property from Favorites",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/favorites/{{propertyId}}", "host": ["{{baseUrl}}"], "path": ["favorites", "{{propertyId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "07. Notifications",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/notifications?page=1&limit=10", "host": ["{{baseUrl}}"], "path": ["notifications"], "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "10" }] }
+          }
+        },
+        {
+          "name": "Get Unread Count",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/notifications/unread-count", "host": ["{{baseUrl}}"], "path": ["notifications", "unread-count"] }
+          }
+        },
+        {
+          "name": "Mark Single Notification Read",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/notifications/{{notificationId}}/read", "host": ["{{baseUrl}}"], "path": ["notifications", "{{notificationId}}", "read"] }
+          }
+        },
+        {
+          "name": "Mark All Notifications Read",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/notifications/read-all", "host": ["{{baseUrl}}"], "path": ["notifications", "read-all"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "08. Amenities",
+      "item": [
+        {
+          "name": "Get All Amenities (Public)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/amenities", "host": ["{{baseUrl}}"], "path": ["amenities"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "09. Owner Dashboard & Management",
+      "item": [
+        {
+          "name": "Get Owner Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/owner/dashboard", "host": ["{{baseUrl}}"], "path": ["owner", "dashboard"] }
+          }
+        },
+        {
+          "name": "Get Owner Properties",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/owner/properties", "host": ["{{baseUrl}}"], "path": ["owner", "properties"] }
+          }
+        },
+        {
+          "name": "Get Owner Booking Requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/owner/booking-requests?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["owner", "booking-requests"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "status", "value": "PENDING", "disabled": true },
+                { "key": "propertyId", "value": "{{propertyId}}", "disabled": true },
+                { "key": "roomId", "value": "{{roomId}}", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Owner Property",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ownerToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/owner/properties/{{propertyId}}", "host": ["{{baseUrl}}"], "path": ["owner", "properties", "{{propertyId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Locations & Districts",
+      "item": [
+        {
+          "name": "Get All Locations (Cities with Districts)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/locations", "host": ["{{baseUrl}}"], "path": ["locations"] }
+          }
+        },
+        {
+          "name": "Get Cities List Only",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/locations/cities", "host": ["{{baseUrl}}"], "path": ["locations", "cities"] }
+          }
+        },
+        {
+          "name": "Get Areas by City (e.g. Giza / الجيزة)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/locations/cities/الجيزة/areas", "host": ["{{baseUrl}}"], "path": ["locations", "cities", "الجيزة", "areas"] }
+          }
+        },
+        {
+          "name": "Search Locations (e.g. Dokki / الدقي)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/locations?search=الدقي",
+              "host": ["{{baseUrl}}"],
+              "path": ["locations"],
+              "query": [
+                { "key": "search", "value": "الدقي" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Chat & Messaging",
+      "item": [
+        {
+          "name": "Start or Get Conversation (Student-Student / Student-Owner)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.id) {",
+                  "    pm.collectionVariables.set('conversationId', jsonData.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"targetUserId\": \"{{targetUserId}}\",\n  \"propertyId\": \"{{propertyId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/conversations", "host": ["{{baseUrl}}"], "path": ["conversations"] }
+          }
+        },
+        {
+          "name": "Get User Conversations (Inbox)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/conversations?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["conversations"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Total Unread Messages Count",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/conversations/unread-total", "host": ["{{baseUrl}}"], "path": ["conversations", "unread-total"] }
+          }
+        },
+        {
+          "name": "Get Conversation Details by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/conversations/{{conversationId}}", "host": ["{{baseUrl}}"], "path": ["conversations", "{{conversationId}}"] }
+          }
+        },
+        {
+          "name": "Get Messages of Conversation (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages?page=1&limit=30",
+              "host": ["{{baseUrl}}"],
+              "path": ["conversations", "{{conversationId}}", "messages"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "30" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Send Message in Conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"السلام عليكم، هل السكن لا يزال متاحاً للاستئجار؟\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages", "host": ["{{baseUrl}}"], "path": ["conversations", "{{conversationId}}", "messages"] }
+          }
+        },
+        {
+          "name": "Mark Conversation as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/conversations/{{conversationId}}/read", "host": ["{{baseUrl}}"], "path": ["conversations", "{{conversationId}}", "read"] }
+          }
+        },
+        {
+          "name": "Delete Message (Sender Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" },
+              { "key": "Accept-Language", "value": "ar" }
+            ],
+            "url": { "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages/{{messageId}}", "host": ["{{baseUrl}}"], "path": ["conversations", "{{conversationId}}", "messages", "{{messageId}}"] }
+          }
+        }
+      ]
+    }
+  ]
+}
