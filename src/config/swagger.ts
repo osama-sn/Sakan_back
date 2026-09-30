@@ -12,6 +12,10 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
+        url: `https://sakann.duckdns.org/api/v1`,
+        description: "Production Server (sakann.duckdns.org)"
+      },
+      {
         url: `http://localhost:${env.PORT}/api/v1`,
         description: "Local Development Server"
       }

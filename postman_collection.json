@@ -6,8 +6,9 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:5000/api/v1", "type": "string" },
-    { "key": "healthUrl", "value": "http://localhost:5000/health", "type": "string" },
+    { "key": "baseUrl", "value": "https://sakann.duckdns.org/api/v1", "type": "string" },
+    { "key": "healthUrl", "value": "https://sakann.duckdns.org/health", "type": "string" },
+    { "key": "docsUrl", "value": "https://sakann.duckdns.org/api/docs", "type": "string" },
     { "key": "studentToken", "value": "", "type": "string" },
     { "key": "ownerToken", "value": "", "type": "string" },
     { "key": "refreshToken", "value": "", "type": "string" },
